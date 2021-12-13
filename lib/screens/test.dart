@@ -9,13 +9,43 @@ class TestScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Test Screen'),
       ),
-      body: Center(
-          child: ElevatedButton(
-              onPressed: () async {
-                await methodWithSuccess();
-                await methodWithError();
+      body: Padding(
+        padding: const EdgeInsets.only(left: 16.0, right: 16, top: 16),
+        child: Column(
+          children: [
+            TextField(
+              decoration:
+                  InputDecoration(hintText: 'Click me! to cause layout error'),
+            ),
+            Center(
+              child: ElevatedButton(
+                  onPressed: () async {
+                    await methodWithSuccess();
+                    await methodWithError();
+                  },
+                  child: Text('Run Async operation')),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: index % 2 == 0
+                        ? Colors.blue.shade400
+                        : Colors.grey.shade400,
+                  ),
+                  child: Center(
+                      child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Text('Item #${index + 1}'),
+                  )),
+                );
               },
-              child: Text('Run Async operation'))),
+              itemCount: 12,
+            )
+          ],
+        ),
+      ),
     );
   }
 
