@@ -25,6 +25,21 @@ class TestScreen extends StatelessWidget {
                   },
                   child: Text('Run Async operation')),
             ),
+            TextField(
+              decoration: InputDecoration(hintText: 'Username'),
+              key: Key('txt_username'),
+            ),
+            TextField(
+              decoration: InputDecoration(hintText: 'Password'),
+              key: Key('txt_password'),
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () async {},
+                child: Text('Login'),
+                key: Key('btn_login'),
+              ),
+            ),
             ListView.builder(
               shrinkWrap: true,
               itemBuilder: (context, index) {
@@ -41,7 +56,7 @@ class TestScreen extends StatelessWidget {
                   )),
                 );
               },
-              itemCount: 12,
+              itemCount: 8,
             )
           ],
         ),
