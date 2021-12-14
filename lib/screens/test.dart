@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:testingdemo/services/login_service.dart';
 
 class TestScreen extends StatelessWidget {
-  const TestScreen({Key? key}) : super(key: key);
+  LoginService loginService;
+
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  TestScreen({
+    Key? key,
+    required this.loginService,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +37,50 @@ class TestScreen extends StatelessWidget {
             TextField(
               decoration: InputDecoration(hintText: 'Username'),
               key: Key('txt_username'),
+              controller: usernameController,
             ),
             TextField(
               decoration: InputDecoration(hintText: 'Password'),
               key: Key('txt_password'),
+              controller: passwordController,
             ),
             Center(
               child: ElevatedButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  final username = usernameController.text;
+                  final password = usernameController.text;
+
+                  if (await loginService.loginWithUsernameAndPassword(
+                      username, password)) {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) {
+                        return AlertDialog(
+                          key: const Key('alert_login_success'),
+                          title: const Text(
+                              'You have been logged in successfully'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(ctx).pop();
+                              },
+                              child: const Text('Ok'),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Text('Falied to login'),
+                      action: SnackBarAction(
+                        key: Key('snack_login_failed'),
+                        onPressed: () {},
+                        label: 'Retry',
+                      ),
+                    ));
+                  }
+                },
                 child: Text('Login'),
                 key: Key('btn_login'),
               ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testingdemo/screens/test.dart';
+import 'package:testingdemo/services/login_service.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -7,7 +8,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const TestScreen(),
+      home: TestScreen(
+        loginService: LoginService(),
+      ),
     );
   }
 }
