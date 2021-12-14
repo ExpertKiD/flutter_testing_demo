@@ -48,7 +48,7 @@ class TestScreen extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () async {
                   final username = usernameController.text;
-                  final password = usernameController.text;
+                  final password = passwordController.text;
 
                   if (await loginService.loginWithUsernameAndPassword(
                       username, password)) {
