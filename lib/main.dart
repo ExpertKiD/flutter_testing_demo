@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 import 'package:sentry/sentry.dart';
+import 'package:testingdemo/sentry/setnry_event.dart';
 
 import 'app/app.dart';
 
@@ -32,17 +33,27 @@ Future<void> main() async {
         _log.e(details.toString(), details.exception, details.stack);
       } else {
         _log.d('Sending error details to Zone');
-        Zone.current.handleUncaughtError(details.exception, details.stack!);
+        FlutterError.dumpErrorToConsole(details);
+        print(details.stack == null);
+        if (details.stack != null) {
+          _log.e('Production error: ' + details.toString(), details.exception,
+              details.stack);
+          Zone.current.handleUncaughtError(details.exception, details.stack!);
+        }
       }
     };
 
     runApp(const MyApp());
-  }, (Object error, StackTrace stack) {
+  }, (Object error, StackTrace stack) async {
     if (isDebugMode()) {
       _log.e("Caught Dart Error!", error, stack);
     } else {
       _log.d("Time to report to error tracking system in production");
-      _sentry.captureException(error, stackTrace: stack);
+      // _sentry.captureException(error, stackTrace: stack);
+
+      final SentryEvent event = await getSentryEnvEvent(error);
+
+      _sentry.captureEvent(event, stackTrace: stack);
     }
   });
 }
