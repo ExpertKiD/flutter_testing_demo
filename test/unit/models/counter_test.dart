@@ -3,6 +3,34 @@ import 'package:testingdemo/models/counter.dart';
 
 void main() {
   group('Counter tests', () {
+    dynamic? x;
+
+    setUpAll(() {
+      x = 0;
+      assert(x != null);
+
+      print('setup all');
+    });
+
+    tearDownAll(() {
+      assert(x == 0);
+      x = null;
+
+      assert(x == null);
+      print('tear down all');
+      x = null;
+    });
+
+    setUp(() {
+      print(x);
+      print('setup');
+    });
+
+    tearDown(() {
+      print(x == null);
+      print('tear down');
+    });
+
     test('Counter should be 0', () {
       expect(Counter().value, 0);
     });
